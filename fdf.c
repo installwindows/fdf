@@ -6,16 +6,18 @@
 /*   By: varnaud <varnaud@student.42.us.org>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/10/29 15:23:27 by varnaud           #+#    #+#             */
-/*   Updated: 2016/11/23 18:46:39 by varnaud          ###   ########.fr       */
+/*   Updated: 2016/11/24 02:42:14 by varnaud          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
-
+#include <stdio.h>
+#include <stdlib.h>
 #include <fcntl.h>
 #include <unistd.h>
 #include <math.h>
 #include "libft.h"
 #include "mlx.h"
 #include "fdf.h"
+#include "get_next_line.h"
 
 void	draw_line(void *mlx_ptr, void *mlx_window, t_pos a, t_pos b, int color)
 {
@@ -40,36 +42,57 @@ void	draw_line(void *mlx_ptr, void *mlx_window, t_pos a, t_pos b, int color)
 		mlx_pixel_put(mlx_ptr, mlx_window, round(a.x), round(a.y), color);
 	}
 }
+t_grid	*quick_and_dirty(char *file)
+{
+	int		fd;
+	char	*line;
+	t_grid	*grid;
 
-int		**read_file(char *file)
+	grid = malloc(sizeof(grid));
+	grid->x = 0;
+	grid->y = 0;
+	if ((fd = open(file, O_RDONLY)) == -1)
+		return (NULL);
+	while (get_next_line(fd, &line))
+	{
+		if (!grid->x)
+			grid->x = ft_count_words(line, ' ');
+		grid->y++;
+	}
+	grid->dots = malloc(sizeof(int*) * grid->y);
+	close(fd);
+	return (grid);
+}
+t_grid	*read_file(char *file)
 {
 	char	*line;
 	char	**split;
-	int		**grid;
 	int		fd;
-	int		x;
-	int		y;
-	int		n;
-	int		tmpx;
-	int		tmpy;
+	int		i;
+	int		j;
+	t_grid	*grid;
 
-	x = 500;
-	y = 20;
-	tmpx = x;
-	tmpy = y;
-	grid = malloc(sizeof(int**));
+	i = 0;
+	grid = quick_and_dirty(file);
+	printf("after quick %d %d\n", grid->x, grid->y);
 	fd = open(file, O_RDONLY);
 	while (get_next_line(fd, &line))
 	{
+		grid->dots[i] = malloc(sizeof(int) * grid->x);
 		split = ft_strsplit(line, ' ');
-		while (*split)
+		j = 0;
+		//printf("split!\n");
+		while (split[j])
 		{
-			n = ft_atoi(*split);
-			tmpx += 15;
-			tmpy += -15 + n;
-			
+			grid->dots[i][j] = ft_atoi(split[j]);
+			free(split[j++]);
 		}
+		free(split);
+		i++;
 	}
+	close(fd);
+	printf("after read\n");
+	return (grid);
 }
 
 void	testing(void)
@@ -101,10 +124,15 @@ int		main(int argc, char **argv)
 
 	if (argc == 2)
 	{
-		fd = open(*++argv, O_RDONLY);
-		if (fd == -1)
-			return (1);
-		close(fd);
+		t_grid *grid = read_file(*++argv);
+		int	i;
+		int	j;
+		for (i = 0; i < grid->y; i++)
+		{
+			for (j = 0; j < grid->x; j++)
+				printf("%d ", grid->dots[i][j]);
+			printf("\n");
+		}
 	}
 	else
 	{
