@@ -6,7 +6,7 @@
 /*   By: varnaud <varnaud@student.42.us.org>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/10/29 15:23:27 by varnaud           #+#    #+#             */
-/*   Updated: 2016/11/24 02:42:14 by varnaud          ###   ########.fr       */
+/*   Updated: 2016/11/25 20:40:59 by varnaud          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 #include <stdio.h>
@@ -58,11 +58,44 @@ t_grid	*quick_and_dirty(char *file)
 		if (!grid->x)
 			grid->x = ft_count_words(line, ' ');
 		grid->y++;
+		free(line);
 	}
 	grid->dots = malloc(sizeof(int*) * grid->y);
 	close(fd);
 	return (grid);
 }
+
+t_node	*read_file_node(int fd)
+{
+	char	*line;
+	char	**split;
+	t_node	*head;
+	t_node	*current;
+	t_node	*previous;
+
+	previous = NULL;
+	head = NULL;
+	current = head;
+	while (get_next_line(fd, &line))
+	{
+		split = ft_strsplit(line, ' ');
+		while (*split)
+		{
+			current = malloc(sizeof(t_node));
+			set_content(current, ft_atoi(*split));
+			free(*split);
+			split++;
+			if (previous)
+			{
+				previous->left = current;
+
+			}
+			current = current->right;
+		}
+
+	}
+}
+
 t_grid	*read_file(char *file)
 {
 	char	*line;
@@ -78,21 +111,29 @@ t_grid	*read_file(char *file)
 	fd = open(file, O_RDONLY);
 	while (get_next_line(fd, &line))
 	{
+		printf("line: |%s|\n", line);
 		grid->dots[i] = malloc(sizeof(int) * grid->x);
 		split = ft_strsplit(line, ' ');
 		j = 0;
-		//printf("split!\n");
 		while (split[j])
 		{
 			grid->dots[i][j] = ft_atoi(split[j]);
 			free(split[j++]);
 		}
 		free(split);
+		free(line);
 		i++;
 	}
 	close(fd);
 	printf("after read\n");
 	return (grid);
+}
+
+
+
+void	display_grid(t_grid *grid)
+{
+
 }
 
 void	testing(void)

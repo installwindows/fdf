@@ -6,7 +6,7 @@
 /*   By: varnaud <varnaud@student.42.us.org>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/11/23 23:52:48 by varnaud           #+#    #+#             */
-/*   Updated: 2016/11/24 00:44:03 by varnaud          ###   ########.fr       */
+/*   Updated: 2016/11/25 19:05:10 by varnaud          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,7 @@ void		remove_from_list(t_list **list, int fd)
 	{
 		if (((t_fd*)(current->content))->fd == fd)
 		{
-			free_fd((t_fd*)(current->content));
+			free(current->content);
 			previous->next = current->next;
 			free(current);
 			break ;
