@@ -6,7 +6,7 @@
 /*   By: varnaud <varnaud@student.42.us.org>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/10/29 15:23:27 by varnaud           #+#    #+#             */
-/*   Updated: 2016/11/25 20:40:59 by varnaud          ###   ########.fr       */
+/*   Updated: 2016/11/26 00:38:08 by varnaud          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 #include <stdio.h>
@@ -65,6 +65,27 @@ t_grid	*quick_and_dirty(char *file)
 	return (grid);
 }
 
+void	set_pos(t_grid *grid)
+{
+	int		i;
+	int		j;
+
+	grid->pos = malloc(sizeof(t_pos*) * grid->y);
+	i = 0;
+	while (i < grid->y)
+	{
+		grid->pos[i] = malloc(sizeof(t_pos) * grid->y);
+		j = 0;
+		while (j < grid->x)
+		{
+			grid->pos[i][j].x = PADDING + INCREMENT * i
+			j++;
+		}
+		i++;
+	}
+}
+
+/*
 t_node	*read_file_node(int fd)
 {
 	char	*line;
@@ -95,7 +116,7 @@ t_node	*read_file_node(int fd)
 
 	}
 }
-
+*/
 t_grid	*read_file(char *file)
 {
 	char	*line;
