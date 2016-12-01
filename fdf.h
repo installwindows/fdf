@@ -6,7 +6,7 @@
 /*   By: varnaud <varnaud@student.42.us.org>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/11/22 22:11:15 by varnaud           #+#    #+#             */
-/*   Updated: 2016/11/26 20:35:47 by varnaud          ###   ########.fr       */
+/*   Updated: 2016/12/01 01:32:39 by varnaud          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,5 +32,6 @@ typedef struct	s_grid
 	int			y;
 }				t_grid;
 
-#endif
+void			draw_line(void *mlx_ptr, void *mlx_window, t_pos a, t_pos b);
 
+#endif
