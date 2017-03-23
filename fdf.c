@@ -5,91 +5,81 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: varnaud <varnaud@student.42.us.org>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2016/10/29 15:23:27 by varnaud           #+#    #+#             */
-/*   Updated: 2016/12/01 01:37:14 by varnaud          ###   ########.fr       */
+/*   Created: 2017/03/22 18:28:15 by varnaud           #+#    #+#             */
+/*   Updated: 2017/03/22 20:53:30 by varnaud          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <stdlib.h>
 #include <fcntl.h>
-#include <unistd.h>
-#include <math.h>
-#include "libft.h"
-#include "mlx.h"
-#include "fdf.h"
+#include <stdlib.h>
 #include "get_next_line.h"
+#include "ft_printf.h"
+#include "libft.h"
+#include "fdf.h"
+#include "mlx.h"
 
-static t_grid	*set_grid(char *file)
+t_world	*validate_file(const char *file)
 {
 	int		fd;
-	char	*line;
-	t_grid	*grid;
+	int		i;
+	int		width;
+	char	*line = NULL;
+	t_world	*world;
 
-	grid = malloc(sizeof(t_grid));
-	grid->x = 0;
-	grid->y = 0;
+	width = 1;
 	if ((fd = open(file, O_RDONLY)) == -1)
 		return (NULL);
+	world = malloc(sizeof(t_world));
+	ft_memset(world, 0, sizeof(t_world));
 	while (get_next_line(fd, &line))
 	{
-		if (!grid->x)
-			grid->x = ft_count_words(line, ' ');
-		grid->y++;
+		i = 0;
+		while (line[i])
+		{
+			if (line[i] == '\n' && line[i + 1] != '\0')
+				return (NULL);
+			if (!ft_strchr("0123456789 ", line[i]))
+				return (NULL);
+			if (line[i] == ' ')
+			{
+				while (line[i] == ' ')
+					i++;
+				width++;
+				continue ;
+			}
+			i++;
+		}
+		if (!(world->width))
+			world->width = width;
+		if (world->width != width)
+			return (NULL);
+		world->height++;
 		free(line);
 	}
-	grid->dots = malloc(sizeof(int*) * grid->y);
-	grid->pos = malloc(sizeof(t_pos*) * grid->y);
 	close(fd);
-	return (grid);
+	return (world);
 }
 
-static void		set_pos(t_grid *grid)
+int		set_map(const char *file, t_world *world)
 {
-	int		i;
-	int		j;
-	int		x;
-	int		y;
-	float	angle;
-
-	angle = 30 * M_PI / 180;
-	i = 0;
-	while (i < grid->y)
-	{
-		grid->pos[i] = malloc(sizeof(t_pos) * grid->x);
-		j = 0;
-		while (j < grid->x)
-		{
-			grid->pos[i][j].x = (float)INCREMENT * j;
-			grid->pos[i][j].y = (float)INCREMENT * i;
-			x = grid->pos[i][j].x;
-			y = grid->pos[i][j].y;
-			grid->pos[i][j].x = PADDING + (x * cos(angle) - y * sin(angle));
-			grid->pos[i][j].y = PADDING + (y * cos(angle) + x * sin(angle)) -
-								grid->dots[i][j] * 1.5;
-			j++;
-		}
-		i++;
-	}
-}
-
-static void		read_file(char *file, t_grid *grid)
-{
-	char	*line;
-	char	**split;
 	int		fd;
 	int		i;
 	int		j;
+	char	*line = NULL;
+	char	**split;
 
+	if ((fd = open(file, O_RDONLY)) == -1)
+		return (1);
+	world->map = malloc(sizeof(t_point*) * (world->height + 1));
 	i = 0;
-	fd = open(file, O_RDONLY);
 	while (get_next_line(fd, &line))
 	{
-		grid->dots[i] = malloc(sizeof(int) * grid->x);
+		world->map[i] = malloc(sizeof(t_point) * (world->width + 1));
 		split = ft_strsplit(line, ' ');
 		j = 0;
 		while (split[j])
 		{
-			grid->dots[i][j] = ft_atoi(split[j]);
+			world->map[i][j].z = ft_atoi(split[j]);
 			free(split[j]);
 			j++;
 		}
@@ -98,54 +88,78 @@ static void		read_file(char *file, t_grid *grid)
 		i++;
 	}
 	close(fd);
+	return (0);
 }
 
-static void		display_grid(t_grid *grid, void *mlx_ptr, void *mlx_window)
+t_world	*set_world(const char *file)
+{
+	t_world	*world;
+
+	world = validate_file(file);
+	if (world == NULL)
+		return (NULL);
+	if (set_map(file, world))
+		return (NULL);
+	return (world);
+}
+
+void	free_world(t_world *world)
+{
+	int		i;
+
+	i = 0;
+	while (i < world->height)
+		free(world->map[i]);
+	free(world->map);
+	free(world);
+}
+
+void	print_world(t_world *world)
 {
 	int		i;
 	int		j;
-	t_pos	b;
 
 	i = 0;
-	while (i < grid->y)
+	while (i < world->height)
 	{
 		j = 0;
-		while (j < grid->x)
+		while (j < world->width)
 		{
-			if (j + 1 < grid->x)
-				b = grid->pos[i][j + 1];
-			else
-				b = grid->pos[i][j];
-			draw_line(mlx_ptr, mlx_window, grid->pos[i][j], b);
-			if (i + 1 < grid->y)
-				b = grid->pos[i + 1][j];
-			else
-				b = grid->pos[i][j];
-			draw_line(mlx_ptr, mlx_window, grid->pos[i][j], b);
+			ft_printf("%-3d ", world->map[i][j].z);
 			j++;
 		}
+		ft_printf("\n");
 		i++;
 	}
 }
 
-int				main(int argc, char **argv)
+int		key_hook(int keycode, void *param)
 {
-	int		fd;
-	t_grid	*grid;
-	void	*mlx_ptr;
-	void	*mlx_window;
+	if (keycode == 53)
+		exit(0);
+	return (0);
+	//ft_printf("%d\n", keycode);
+}
+
+int		main(int argc, char **argv)
+{
+	void	*mlx;
+	void	*window;
+	t_world	*world;
 
 	if (argc == 2)
 	{
-		grid = set_grid(argv[1]);
-		read_file(argv[1], grid);
-		if (grid == NULL)
-			return (0);
-		set_pos(grid);
-		mlx_ptr = mlx_init();
-		mlx_window = mlx_new_window(mlx_ptr, WIN_HEIGHT, WIN_WIDTH, "FDF");
-		display_grid(grid, mlx_ptr, mlx_window);
-		mlx_loop(mlx_ptr);
+		world = set_world(argv[1]);
+		if (world == NULL)
+		{
+			perror("fdf");
+			return (1);
+		}
+		print_world(world);
+		exit(0);
+		mlx = mlx_init();
+		window = mlx_new_window(mlx, 800, 600, "FDF");
+		mlx_key_hook(window, key_hook, NULL);
+		mlx_loop(mlx);
 	}
-	return (0);
 }

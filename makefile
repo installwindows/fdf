@@ -1,10 +1,11 @@
-SRC = fdf.c
+NAME=fdf
+SRC=fdf.c \
+	get_next_line.c
+LIB=libft.a \
+	libftprintf.a \
+	libmlx.a
 
-all: libft
-	gcc $(SRC) -L. -Llibft/ -lmlx -framework OpenGL -framework AppKit -lft -Ilibft
+all: $(NAME)
 
-linux: libft
-	gcc $(SRC) -L. -Llibft/ -lmlx -lXext -lX11 -lft -Ilibft
-
-libft:
-	make -C libft/
+$(NAME):
+	gcc -o $(NAME) $(SRC) $(LIB) -g -framework OpenGL -framework AppKit

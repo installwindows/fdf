@@ -1,30 +1,33 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   fdf.h                                              :+:      :+:    :+:   */
+/*   get_next_line.h                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: varnaud <varnaud@student.42.us.org>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2017/03/22 18:34:06 by varnaud           #+#    #+#             */
-/*   Updated: 2017/03/22 20:35:42 by varnaud          ###   ########.fr       */
+/*   Created: 2016/11/06 22:13:01 by varnaud           #+#    #+#             */
+/*   Updated: 2016/11/24 00:15:28 by varnaud          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef FDF_H
-# define FDF_H
+#ifndef GET_NEXT_LINE_H
+# define GET_NEXT_LINE_H
+# define BUFF_SIZE 4
+# include "libft.h"
 
-typedef struct	s_point
-{
-	int			x;
-	int			y;
-	int			z;
-}				t_point;
+int				get_next_line(const int fd, char **line);
+void			remove_from_list(t_list **list, int fd);
 
-typedef struct	s_world
+typedef struct	s_fd
 {
-	t_point		**map;
-	int			width;
-	int			height;
-}				t_world;
+	int			fd;
+	char		*file;
+	char		*line;
+	int			isbinary;
+	int			isdone;
+	int			size;
+	int			bytes_read;
+	int			isread;
+}				t_fd;
 
 #endif
