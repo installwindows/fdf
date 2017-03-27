@@ -6,17 +6,11 @@
 /*   By: varnaud <varnaud@student.42.us.org>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/03/22 18:28:15 by varnaud           #+#    #+#             */
-/*   Updated: 2017/03/22 20:53:30 by varnaud          ###   ########.fr       */
+/*   Updated: 2017/03/27 05:50:01 by varnaud          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <fcntl.h>
-#include <stdlib.h>
-#include "get_next_line.h"
-#include "ft_printf.h"
-#include "libft.h"
 #include "fdf.h"
-#include "mlx.h"
 
 t_world	*validate_file(const char *file)
 {
@@ -31,13 +25,12 @@ t_world	*validate_file(const char *file)
 		return (NULL);
 	world = malloc(sizeof(t_world));
 	ft_memset(world, 0, sizeof(t_world));
-	while (get_next_line(fd, &line))
+	while (gnl(fd, &line))
 	{
 		i = 0;
+		width = 1;
 		while (line[i])
 		{
-			if (line[i] == '\n' && line[i + 1] != '\0')
-				return (NULL);
 			if (!ft_strchr("0123456789 ", line[i]))
 				return (NULL);
 			if (line[i] == ' ')
@@ -72,7 +65,7 @@ int		set_map(const char *file, t_world *world)
 		return (1);
 	world->map = malloc(sizeof(t_point*) * (world->height + 1));
 	i = 0;
-	while (get_next_line(fd, &line))
+	while (gnl(fd, &line))
 	{
 		world->map[i] = malloc(sizeof(t_point) * (world->width + 1));
 		split = ft_strsplit(line, ' ');
@@ -109,7 +102,7 @@ void	free_world(t_world *world)
 
 	i = 0;
 	while (i < world->height)
-		free(world->map[i]);
+		free(world->map[i++]);
 	free(world->map);
 	free(world);
 }
@@ -133,33 +126,31 @@ void	print_world(t_world *world)
 	}
 }
 
-int		key_hook(int keycode, void *param)
-{
-	if (keycode == 53)
-		exit(0);
-	return (0);
-	//ft_printf("%d\n", keycode);
-}
-
 int		main(int argc, char **argv)
 {
-	void	*mlx;
-	void	*window;
-	t_world	*world;
+	t_fdf	*fdf;
 
 	if (argc == 2)
 	{
-		world = set_world(argv[1]);
-		if (world == NULL)
+		fdf = malloc(sizeof(t_fdf));
+		fdf->width = 800;
+		fdf->height = 600;
+		fdf->world = set_world(argv[1]);
+		if (fdf->world == NULL)
 		{
-			perror("fdf");
+			perror("Can't set the world.");
 			return (1);
 		}
-		print_world(world);
-		exit(0);
-		mlx = mlx_init();
-		window = mlx_new_window(mlx, 800, 600, "FDF");
-		mlx_key_hook(window, key_hook, NULL);
-		mlx_loop(mlx);
+		//print_world(fdf->world);
+		//free_world(fdf->world);
+		//free(fdf);
+		//exit(0);
+		fdf->mlx = mlx_init();
+		fdf->window = mlx_new_window(fdf->mlx, fdf->width, fdf->height, "FDF");
+		mlx_key_hook(fdf->window, key_hook, fdf);
+		mlx_expose_hook(fdf->window, expose_hook, fdf);
+		mlx_mouse_hook(fdf->window, mouse_hook, fdf);
+		world_init(fdf);
+		mlx_loop(fdf->mlx);
 	}
 }

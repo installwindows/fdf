@@ -1,28 +1,22 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   get_next_line.h                                    :+:      :+:    :+:   */
+/*   graphic.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: varnaud <varnaud@student.42.us.org>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2016/10/21 12:41:36 by varnaud           #+#    #+#             */
-/*   Updated: 2016/11/05 04:24:25 by varnaud          ###   ########.fr       */
+/*   Created: 2017/03/27 06:36:09 by varnaud           #+#    #+#             */
+/*   Updated: 2017/03/27 06:46:19 by varnaud          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef GET_NEXT_LINE_H
-# define GET_NEXT_LINE_H
-# define BUFF_SIZE 1
+#include "fdf.h"
 
-typedef struct	s_fd
+int		put_pixel_image(t_image *img, int x, int y, int color)
 {
-	int			fd;
-	char		buf[BUFF_SIZE + 1];
-	int			bytes_read;
-	char		*line;
-	int			eof;
-}				t_fd;
-
-int				get_next_line(const int fd, char **line);
-
-#endif
+	if (x < 0 || y < 0 || x >= img->width || y >= img->height)
+		return (-1);
+	ft_memcpy(img->data + x * (img->bpp / 8) + y * img->sl, &color,
+																(img->bpp / 8));
+	return (0);
+}
