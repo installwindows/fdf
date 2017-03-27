@@ -84,6 +84,7 @@ t_fd		*get_or_rm_fd(t_fd **l, int fd, int del)
 	while (head)
 	{
 		if (head->fd == fd)
+		{
 			if (del)
 			{
 				previous->next = head->next;
@@ -95,6 +96,7 @@ t_fd		*get_or_rm_fd(t_fd **l, int fd, int del)
 			}
 			else
 				return (head);
+		}
 		previous = head;
 		head = head->next;
 	}

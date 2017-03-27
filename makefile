@@ -21,4 +21,4 @@ fclean: clean
 linux:
 	gcc -o $(NAME) $(SRC) $(LIB) -g -lXext -lX11
 
-re: fclean linux
+re: fclean all

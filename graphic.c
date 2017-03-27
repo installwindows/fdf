@@ -20,3 +20,25 @@ int		put_pixel_image(t_image *img, int x, int y, int color)
 																(img->bpp / 8));
 	return (0);
 }
+
+int		draw_line_image(t_image *img, t_point a, t_point b, int color)
+{
+	int		steps;
+	float	xi;
+	float	yi;
+	float	x;
+	float	y;
+
+	steps = ft_abs(b.x - a.x) > ft_abs(b.y - a.y) ? ft_abs(b.x - a.x) : ft_abs(b.y - a.y);
+	xi = (float)(b.x - a.x) / (float)steps;
+	yi = (float)(b.y - a.y) / (float)steps;
+	x = a.x;
+	y = a.y;
+	while (steps--)
+	{
+		x += xi;
+		y += yi;
+		put_pixel_image(img, round(x), round(y), color);
+	}
+	return (0);
+}

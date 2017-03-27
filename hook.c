@@ -6,7 +6,7 @@
 /*   By: varnaud <varnaud@student.42.us.org>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/03/26 20:46:58 by varnaud           #+#    #+#             */
-/*   Updated: 2017/03/27 06:05:20 by varnaud          ###   ########.fr       */
+/*   Updated: 2017/03/27 13:52:51 by varnaud          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,9 +14,22 @@
 
 int		key_hook(int keycode, void *param)
 {
+	t_fdf	*fdf;
+
+	fdf = param;
 	if (keycode == 53 || keycode == 65307)
 		exit(0);
-	ft_printf("%d\n", keycode);
+	else if (keycode == UP)
+		mlx_put_image_to_window(fdf->mlx, fdf->window, fdf->image->image, fdf->image->x, fdf->image->y -= 10);
+	else if (keycode == DOWN)
+		mlx_put_image_to_window(fdf->mlx, fdf->window, fdf->image->image, fdf->image->x, fdf->image->y += 10);
+	else if (keycode == LEFT)
+		mlx_put_image_to_window(fdf->mlx, fdf->window, fdf->image->image, fdf->image->x -= 10, fdf->image->y);
+	else if (keycode == RIGHT)
+		mlx_put_image_to_window(fdf->mlx, fdf->window, fdf->image->image, fdf->image->x += 10, fdf->image->y);
+
+
+ft_printf("%d\n", keycode);
 	return (0);
 }
 
