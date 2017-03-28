@@ -19,6 +19,8 @@ fclean: clean
 	rm -rf $(NAME)
 
 linux:
-	gcc -o $(NAME) $(SRC) $(LIB) -g -lXext -lX11
+	gcc -o $(NAME) $(SRC) $(LIB) -g -lXext -lX11 -lm
 
 re: fclean all
+
+rel: fclean linux

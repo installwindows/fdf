@@ -6,7 +6,7 @@
 /*   By: varnaud <varnaud@student.42.us.org>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/03/27 13:41:09 by varnaud           #+#    #+#             */
-/*   Updated: 2017/03/27 13:44:58 by varnaud          ###   ########.fr       */
+/*   Updated: 2017/03/28 10:48:23 by varnaud          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,10 @@
 #  define RIGHT 124
 # elif __linux__
 #  define ESC 65307
+#  define UP 65362
+#  define DOWN 65364
+#  define LEFT 65361
+#  define RIGHT 65363
 # endif
 
 #endif
