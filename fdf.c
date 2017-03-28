@@ -6,7 +6,7 @@
 /*   By: varnaud <varnaud@student.42.us.org>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/03/22 18:28:15 by varnaud           #+#    #+#             */
-/*   Updated: 2017/03/27 05:50:01 by varnaud          ###   ########.fr       */
+/*   Updated: 2017/03/28 09:36:40 by varnaud          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -133,8 +133,8 @@ int		main(int argc, char **argv)
 	if (argc == 2)
 	{
 		fdf = malloc(sizeof(t_fdf));
-		fdf->width = 800;
-		fdf->height = 600;
+		fdf->width = 1600;
+		fdf->height = 1200;
 		fdf->world = set_world(argv[1]);
 		if (fdf->world == NULL)
 		{

@@ -6,7 +6,7 @@
 /*   By: varnaud <varnaud@student.42.us.org>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/03/22 18:34:06 by varnaud           #+#    #+#             */
-/*   Updated: 2017/03/27 13:52:18 by varnaud          ###   ########.fr       */
+/*   Updated: 2017/03/28 10:16:15 by varnaud          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,6 +27,7 @@ typedef struct	s_point
 	int			x;
 	int			y;
 	int			z;
+	int			color;
 }				t_point;
 
 typedef struct	s_world
