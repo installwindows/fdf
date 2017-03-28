@@ -6,7 +6,7 @@
 /*   By: varnaud <varnaud@student.42.us.org>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/03/22 18:28:15 by varnaud           #+#    #+#             */
-/*   Updated: 2017/03/28 10:26:38 by varnaud          ###   ########.fr       */
+/*   Updated: 2017/03/28 12:31:17 by varnaud          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,6 @@ t_world	*validate_file(const char *file)
 	char	*line = NULL;
 	t_world	*world;
 
-	width = 1;
 	if ((fd = open(file, O_RDONLY)) == -1)
 		return (NULL);
 	world = malloc(sizeof(t_world));
@@ -28,7 +27,7 @@ t_world	*validate_file(const char *file)
 	while (gnl(fd, &line))
 	{
 		i = 0;
-		width = 1;
+		width = 0;
 		while (line[i])
 		{
 			if (!ft_strchr("0123456789,xXaAbBcCdDeEfF ", line[i]))
@@ -44,9 +43,10 @@ t_world	*validate_file(const char *file)
 		}
 		if (!(world->width))
 			world->width = width;
-		if (world->width != width)
-			return (NULL);
-		world->height++;
+		//if (world->width != width)
+		//	return (NULL);
+		if (*line)
+			world->height++;
 		free(line);
 	}
 	close(fd);
@@ -73,6 +73,8 @@ int		set_map(const char *file, t_world *world)
 		while (split[j])
 		{
 			world->map[i][j].z = ft_atoi(split[j]);
+			if (world->map[i][j].z < 0)
+				ft_printf("(i, j): (%d, %d) : %d\n", i, j, world->map[i][j].z);
 			world->map[i][j].color = -1;
 			if (ft_strchr(split[j], ','))
 				world->map[i][j].color = ft_atoi_base(ft_strchr(split[j], ',') + 3, 16);
