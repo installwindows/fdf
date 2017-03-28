@@ -6,7 +6,7 @@
 /*   By: varnaud <varnaud@student.42.us.org>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/03/26 20:57:11 by varnaud           #+#    #+#             */
-/*   Updated: 2017/03/28 10:10:32 by varnaud          ###   ########.fr       */
+/*   Updated: 2017/03/28 10:28:40 by varnaud          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,7 +74,7 @@ void	world_init(t_fdf *fdf)
 		j = 0;
 		while (j < fdf->world->width - 1)
 		{
-			ft_printf("(%4d, %4d) ", fdf->world->map[i][j].x, fdf->world->map[i][j].y);
+			ft_printf("(%4d, %4d - %#6x) ", fdf->world->map[i][j].x, fdf->world->map[i][j].y, fdf->world->map[i][j].color);
 			if (fdf->world->map[i][j].z - fdf->world->map[i][j + 1].z)
 				color = 0x91806d;
 			else if (fdf->world->map[i][j].z)

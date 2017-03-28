@@ -6,7 +6,7 @@
 /*   By: varnaud <varnaud@student.42.us.org>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/03/22 18:28:15 by varnaud           #+#    #+#             */
-/*   Updated: 2017/03/28 09:36:40 by varnaud          ###   ########.fr       */
+/*   Updated: 2017/03/28 10:26:38 by varnaud          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,7 @@ t_world	*validate_file(const char *file)
 		width = 1;
 		while (line[i])
 		{
-			if (!ft_strchr("0123456789 ", line[i]))
+			if (!ft_strchr("0123456789,xXaAbBcCdDeEfF ", line[i]))
 				return (NULL);
 			if (line[i] == ' ')
 			{
@@ -73,6 +73,9 @@ int		set_map(const char *file, t_world *world)
 		while (split[j])
 		{
 			world->map[i][j].z = ft_atoi(split[j]);
+			world->map[i][j].color = -1;
+			if (ft_strchr(split[j], ','))
+				world->map[i][j].color = ft_atoi_base(ft_strchr(split[j], ',') + 3, 16);
 			free(split[j]);
 			j++;
 		}
