@@ -6,7 +6,7 @@
 /*   By: varnaud <varnaud@student.42.us.org>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/03/29 15:18:56 by varnaud           #+#    #+#             */
-/*   Updated: 2017/03/29 16:05:22 by varnaud          ###   ########.fr       */
+/*   Updated: 2017/03/29 18:38:47 by varnaud          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,7 +45,7 @@ static t_world	*get_dimension(const char *file, char *line)
 					i++;
 				world->width++;
 			}
-		world->height += ft_strchr("0123456789", line[trim(line)]) ? 1 : 0;
+		world->height += ft_strchr("-0123456789", line[trim(line)]) ? 1 : 0;
 		free(line);
 	}
 	close(fd);
