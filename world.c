@@ -6,7 +6,7 @@
 /*   By: varnaud <varnaud@student.42.us.org>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/03/26 20:57:11 by varnaud           #+#    #+#             */
-/*   Updated: 2017/03/29 17:05:21 by varnaud          ###   ########.fr       */
+/*   Updated: 2017/03/29 22:56:41 by varnaud          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,10 +71,10 @@ void		world_init(t_fdf *fdf)
 	set_xy(fdf->world, line_size);
 	fdf->image = set_image(fdf, line_size);
 	fdf->image->x = (fdf->width -
-		fdf->world->map[fdf->world->width / 2][fdf->world->height / 2].x * 2)
+		fdf->world->map[fdf->world->height / 2][fdf->world->width / 2].x * 2)
 		/ 2;
 	fdf->image->y = (fdf->height - 
-		fdf->world->map[fdf->world->width / 2][fdf->world->height / 2].y * 2)
+		fdf->world->map[fdf->world->height / 2][fdf->world->width / 2].y * 2)
 		/ 2;
 	mlx_put_image_to_window(fdf->mlx, fdf->window,
 							fdf->image->image, fdf->image->x, fdf->image->y);
