@@ -6,7 +6,7 @@
 /*   By: varnaud <varnaud@student.42.us.org>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/03/29 15:18:56 by varnaud           #+#    #+#             */
-/*   Updated: 2017/03/29 23:31:28 by varnaud          ###   ########.fr       */
+/*   Updated: 2017/03/30 00:15:54 by varnaud          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,10 +31,10 @@ static t_world	*get_dimension(const char *file, char *line)
 	if ((fd = open(file, O_RDONLY)) == -1)
 		return (NULL);
 	world = malloc(sizeof(t_world));
-	ft_memset(world, (i = 0), sizeof(t_world));
-	while (gnl(fd, &line))
+	ft_memset(world, 0, sizeof(t_world));
+	while ((i = gnl(fd, &line)) != -1 && i)
 	{
-		if (!world->width)
+		if (!world->width && !(i = 0))
 			while (1)
 			{
 				while (line[i] == ' ')
@@ -52,14 +52,14 @@ static t_world	*get_dimension(const char *file, char *line)
 	return (world);
 }
 
-static void		set_line(t_point *p, char *line)
+static int		set_line(t_point *p, char *line, t_world *w)
 {
 	char	**split;
 	int		j;
 
 	split = ft_strsplit(line, ' ');
 	j = 0;
-	while (split[j])
+	while (split[j] && j < w->width)
 	{
 		p[j].z = ft_atoi(split[j]);
 		p[j].color = -1;
@@ -68,7 +68,12 @@ static void		set_line(t_point *p, char *line)
 		free(split[j]);
 		j++;
 	}
+	if (j != w->width)
+		return (1);
+	while (split[j])
+		free(split[j++]);
 	free(split);
+	return (0);
 }
 
 static int		set_map(const char *file, t_world *world)
@@ -81,13 +86,16 @@ static int		set_map(const char *file, t_world *world)
 		return (1);
 	world->map = malloc(sizeof(t_point*) * (world->height + 1));
 	i = 0;
-	while (gnl(fd, &line))
+	while (gnl(fd, &line) && i < world->height)
 	{
 		world->map[i] = malloc(sizeof(t_point) * (world->width + 1));
-		set_line(world->map[i], line);
+		if (set_line(world->map[i], line, world))
+			return (1);
 		free(line);
 		i++;
 	}
+	if (i != world->height)
+		return (1);
 	close(fd);
 	return (0);
 }
@@ -98,6 +106,8 @@ t_world			*set_world(const char *file)
 
 	world = get_dimension(file, NULL);
 	if (world == NULL)
+		return (NULL);
+	if (world->width <= 0 || world->height <= 0)
 		return (NULL);
 	if (set_map(file, world))
 		return (NULL);

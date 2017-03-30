@@ -6,7 +6,7 @@
 /*   By: varnaud <varnaud@student.42.us.org>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/03/22 18:28:15 by varnaud           #+#    #+#             */
-/*   Updated: 2017/03/29 18:28:58 by varnaud          ###   ########.fr       */
+/*   Updated: 2017/03/30 00:03:50 by varnaud          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,7 +69,7 @@ int			main(int argc, char **argv)
 	fdf->world = set_world(argv[1]);
 	if (fdf->world == NULL)
 	{
-		ft_fprintf(2, "Can't set the world.");
+		ft_fprintf(2, "Can't set the world. (%s)\n", argv[1]);
 		return (1);
 	}
 	fdf->mlx = mlx_init();

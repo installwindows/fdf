@@ -22,7 +22,7 @@ $(NAME):
 	make -C libft
 	make -C ft_printf
 	make -C mlx
-	gcc -Wall -Werror -Wextra -o $(NAME) $(SRC) $(LIB) $(INC) -framework OpenGL -framework AppKit -lft -lmlx -lftprintf
+	gcc -g -Wall -Werror -Wextra -o $(NAME) $(SRC) $(LIB) $(INC) -framework OpenGL -framework AppKit -lft -lmlx -lftprintf
 clean:
 	make -C libft clean
 	make -C ft_printf clean
