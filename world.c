@@ -6,7 +6,7 @@
 /*   By: varnaud <varnaud@student.42.us.org>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/03/26 20:57:11 by varnaud           #+#    #+#             */
-/*   Updated: 2017/03/29 22:56:41 by varnaud          ###   ########.fr       */
+/*   Updated: 2017/03/29 23:33:48 by varnaud          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,9 +62,6 @@ static void	set_xy(t_world *w, int ll)
 
 void		world_init(t_fdf *fdf)
 {
-	int		i;
-	int		j;
-	int		color = 255;
 	int		line_size;
 
 	line_size = 10;

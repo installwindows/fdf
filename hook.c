@@ -6,7 +6,7 @@
 /*   By: varnaud <varnaud@student.42.us.org>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/03/26 20:46:58 by varnaud           #+#    #+#             */
-/*   Updated: 2017/03/29 18:31:26 by varnaud          ###   ########.fr       */
+/*   Updated: 2017/03/29 23:32:52 by varnaud          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,12 +15,12 @@
 int		key_hook(int keycode, t_fdf *fdf)
 {
 	ft_printf("%d\n", keycode);
-	return (0);
+	return (fdf != NULL);
 }
 
 int		expose_hook(t_fdf *fdf)
 {
-	return (0);
+	return (fdf != NULL);
 }
 
 int		mouse_hook(int button, int x, int y, t_fdf *fdf)

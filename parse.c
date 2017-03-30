@@ -6,7 +6,7 @@
 /*   By: varnaud <varnaud@student.42.us.org>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/03/29 15:18:56 by varnaud           #+#    #+#             */
-/*   Updated: 2017/03/29 18:38:47 by varnaud          ###   ########.fr       */
+/*   Updated: 2017/03/29 23:31:28 by varnaud          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,9 +75,7 @@ static int		set_map(const char *file, t_world *world)
 {
 	int		fd;
 	int		i;
-	int		j;
 	char	*line;
-	char	**split;
 
 	if ((fd = open(file, O_RDONLY)) == -1)
 		return (1);
