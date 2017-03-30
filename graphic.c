@@ -6,7 +6,7 @@
 /*   By: varnaud <varnaud@student.42.us.org>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/03/27 06:36:09 by varnaud           #+#    #+#             */
-/*   Updated: 2017/03/27 06:46:19 by varnaud          ###   ########.fr       */
+/*   Updated: 2017/03/29 17:06:48 by varnaud          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ int		put_pixel_image(t_image *img, int x, int y, int color)
 	return (0);
 }
 
-int		draw_line_image(t_image *img, t_point a, t_point b, int color)
+int		dw_line(t_image *img, t_point a, t_point b, int color)
 {
 	int		steps;
 	float	xi;
@@ -29,7 +29,8 @@ int		draw_line_image(t_image *img, t_point a, t_point b, int color)
 	float	x;
 	float	y;
 
-	steps = ft_abs(b.x - a.x) > ft_abs(b.y - a.y) ? ft_abs(b.x - a.x) : ft_abs(b.y - a.y);
+	steps = ft_abs(b.x - a.x) > ft_abs(b.y - a.y) ? ft_abs(b.x - a.x) :
+															ft_abs(b.y - a.y);
 	xi = (float)(b.x - a.x) / (float)steps;
 	yi = (float)(b.y - a.y) / (float)steps;
 	x = a.x;

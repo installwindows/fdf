@@ -6,12 +6,16 @@
 /*   By: varnaud <varnaud@student.42.us.org>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/03/27 13:41:09 by varnaud           #+#    #+#             */
-/*   Updated: 2017/03/28 10:48:23 by varnaud          ###   ########.fr       */
+/*   Updated: 2017/03/29 17:14:23 by varnaud          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef KEYS_H
 # define KEYS_H
+# define SCROLL_UP 5
+# define SCROLL_DOWN 4
+# define SCROLL_LEFT 7
+# define SCROLL_RIGHT 6
 # ifdef __APPLE__
 #  define ESC 53
 #  define UP 126
